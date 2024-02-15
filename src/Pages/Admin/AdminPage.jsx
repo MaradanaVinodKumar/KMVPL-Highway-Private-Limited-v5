@@ -102,8 +102,10 @@ const AdminPage = (props) => {
             });
 
             if (conunt > 95) {
-              setUploadSuccess(true);
+              setUploadSuccess(() => true);
+
               setTimeout(() => {
+                setTimeout(() => { setProgressBarStatus(() => false); }, 5000);//time out for progress bar automatic close
                 setFiles([]);
               }, 100);
             }
@@ -118,6 +120,7 @@ const AdminPage = (props) => {
     setFiles(arrayFiles);
     if (arrayFiles.length === 0) {
       setSelectedFiles(true);
+      setUploadDate(todayForUpload);
     }
   };
 

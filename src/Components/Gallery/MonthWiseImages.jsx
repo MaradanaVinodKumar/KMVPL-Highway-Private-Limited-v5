@@ -103,7 +103,7 @@ function MonthWiseImages({ FormatedDate, EditButton = false }) {
 
   const DeleteImage = (path) => {
     var conf = "do you want to delete!";
-    if (conf) {
+    if (window.confirm(conf)) {
       const deleteRef = ref(imageDb, path);
       deleteObject(deleteRef)
         .then((res) => {
@@ -116,6 +116,9 @@ function MonthWiseImages({ FormatedDate, EditButton = false }) {
           console.log(error);
           alert("image did not deleted!");
         });
+    }
+    else {
+      setTimeout(() => { setShowModal(false); }, 1)
     }
   };
 
@@ -174,6 +177,7 @@ function MonthWiseImages({ FormatedDate, EditButton = false }) {
             setImagesFromFireBase([...arrayOfImagesData]);
             storeTempImages(arrayOfImagesData);
             setSelectedImageIndex(null);//if it is removed delete error occured
+            setShowModal(false);
             console.log(arrayOfImagesData);
             console.log();
             setLoading(true);
@@ -281,13 +285,15 @@ function MonthWiseImages({ FormatedDate, EditButton = false }) {
         <Modal.Footer>
           <button
             onClick={handleModalPrevious}
-            disabled={getImagesFromFireBase.length <= 1}
+            disabled={selectedImageIndex === 0}
+            style={{ opacity: (selectedImageIndex === 0) && 0.2 }}
           >
             &#10094; Previous
           </button>
           <button
             onClick={handleModalNext}
-            disabled={getImagesFromFireBase.length <= 1}
+            disabled={selectedImageIndex === (getImagesFromFireBase.length - 1)}
+            style={{ opacity: (selectedImageIndex === (getImagesFromFireBase.length - 1)) && 0.2 }}
           >
             Next &#10095;
           </button>
